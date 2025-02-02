@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+, "components/dashboard/contribution-tracker/grid-constants.js", "components/dashboard/contribution-tracker/types.js", "components/dashboard/contribution-tracker/utils.js", "components/dashboard/goals/types.js", "lib/mock-data/community/challenges/business.js", "lib/mock-data/community/challenges/habits.js", "lib/mock-data/community/challenges/fitness.js", "lib/mock-data/community/challenges/index.js", "lib/mock-data/community/challenges/spiritual.js", "lib/mock-data/community/challenges.js", "lib/mock-data/community/thoughts.js", "lib/mock-data/community/index.js", "lib/mock-data/community/trending.js", "lib/mock-data/ai-insights.js", "lib/mock-data/community.js", "lib/mock-data/gamification.js", "lib/mock-data/simulator.js", "lib/mock-data/habits.js", "lib/mock-data/time-tracker.js", "lib/mock-data/wellbeing.js", "lib/types/community/author.js", "lib/types/community/challenges.js", "lib/types/community/index.js", "lib/types/community/thoughts.js", "lib/types/community/trending.js", "lib/types/ai.js", "lib/types/community.js", "lib/types/gamification.js", "lib/types/habits.js", "lib/types/marketplace.js", "lib/types/simulator.js", "lib/types/time-tracker.js", "lib/types/wellbeing.js", "lib/utils/time.js", "lib/mock-data.js", "lib/types.js", "lib/utils.js", "src/app/components/Header.js"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
