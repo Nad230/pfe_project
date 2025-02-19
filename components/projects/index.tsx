@@ -2,15 +2,20 @@
 
 import { useState } from "react"
 import { ProjectList } from "./project-list"
-import { AddTaskDialog } from "./add-project-dialog"
+import { AddProjectDialog } from "./add-project-dialog"
+import { AddTaskDialog } from "../time-tracker/settings/project-management/add-task-dialog"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { mockProjects } from "@/lib/mock-data/time-tracker"
 import { toast } from "sonner"
-
 export function ProjectManagement() {
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0); // Key to trigger refresh
+
+  const refreshProjects = () => {
+    setRefreshKey((prev) => prev + 1); // Increment key to force refresh
+  };
   const [projects, setProjects] = useState(mockProjects)
-  const [showAddDialog, setShowAddDialog] = useState(false)
 
   const handleAddProject = (project: any) => {
     setProjects(prev => [...prev, { ...project, id: crypto.randomUUID() }])
@@ -32,21 +37,18 @@ export function ProjectManagement() {
       <div className="flex justify-end">
         <Button onClick={() => setShowAddDialog(true)}>
           <Plus className="mr-2 h-4 w-4" />
-          Add Project
+          Add Projects
         </Button>
       </div>
-      
-      <ProjectList
-        projects={projects}
-        onDelete={handleDeleteProject}
-        onUpdate={handleUpdateProject}
-      />
 
-      <AddTaskDialog
+      <ProjectList key={refreshKey} />
+
+      <AddProjectDialog
         open={showAddDialog}
         onOpenChange={setShowAddDialog}
-        onSubmit={handleAddProject}
+        refreshProjects={refreshProjects}
       />
     </div>
-  )
+  );
 }
+

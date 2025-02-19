@@ -8,6 +8,7 @@ import { ModeToggle } from "./mode-toggle"
 import { useState, useEffect } from "react"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { Button } from "./ui/button"
+
 import { 
   Sheet, 
   SheetContent, 
@@ -16,6 +17,7 @@ import {
   SheetClose
 } from "./ui/sheet"
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar"
+import { LanguageSwitcher } from "./language-switcher"
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LineChart },
@@ -38,7 +40,7 @@ export function Navigation() {
       try {
         // Fetch the user profile data from your backend (replace `userId` with actual data from session)
         const userId = 'yourUserId';  // Fetch this from session or context
-        const response = await fetch(`/api/user/profile/${userId}`);
+        const response = await fetch(`http://localhost:3000/auth/profile/${userId}`);
         
         if (response.ok) {
           const userData = await response.json();
@@ -94,6 +96,7 @@ export function Navigation() {
                   <Link href="/logout" className="px-3 py-2 hover:bg-accent rounded-md">Logout</Link>
                 </nav>
               </PopoverContent>
+              <LanguageSwitcher />
             </Popover>
           </div>
         </div>

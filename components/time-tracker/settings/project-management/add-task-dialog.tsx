@@ -18,46 +18,50 @@ export function AddTaskDialog({ projectId, open, onOpenChange, onTaskCreated }: 
 
   const handleSubmit = async (data: any) => {
     try {
-      setLoading(true)
-      setError(null)
+      const token = Cookies.get("token");
+      if (!token) throw new Error("No authentication token found.");
   
-      const token = Cookies.get("token")
-      if (!token) throw new Error("No authentication token found.")
-  
-      const response = await fetch("http://localhost:3000/tasks/create", {
+      const response = await fetch("http://localhost:3000/projects/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         credentials: "include",
-        body: JSON.stringify({ ...data, projectId }),
-      })
+        body: JSON.stringify({
+          name: data.name,
+          description: data.description,
+          type: data.type,
+          visibility: data.visibility,
+          status: data.status,
+          vision: data.vision,
+          impact: data.impact,
+          revenueModel: data.revenueModel,
+          budgetRange: data.budgetRange, // Adjusted field name to match DTO
+          timeline: data.timeline,
+          fundingSource: data.fundingSource,
+          teamId: data.teamId,
+          teamMembers: data.teamMembers,
+          location: data.location,
+          media: data.media,
+          collaborations: data.collaborations,
+          projectMilestones: data.projectMilestones,
+          aiInsights: data.aiInsights,
+          planType: data.planType,
+          aiUnlocked: data.aiUnlocked,
+        }),
+      });
   
       if (!response.ok) {
-        const errorText = await response.text()
-        throw new Error(`Failed to create task: ${errorText}`)
+        const errorText = await response.text();
+        throw new Error(`Failed to add project: ${errorText}`);
       }
   
-      const result = await response.json()
-      onOpenChange(false) // Close the dialog after submission
-  
+      onOpenChange(false); // Close the dialog
+      refreshProjects(); // Fetch the updated projects list
     } catch (error: any) {
-      setError(error.message || "Something went wrong")
-    } finally {
-      setLoading(false)
+      console.error("Error adding project:", error.message || "Something went wrong");
     }
-  }
+  };
   
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add New Task</DialogTitle>
-        </DialogHeader>
-        <TaskForm onSubmit={handleSubmit} loading={loading} error={error} />
-      </DialogContent>
-    </Dialog>
-  )
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Cookies from "js-cookie"; // Import for authentication
+import Cookies from "js-cookie";
 
 interface TimeEntry {
   id: string;
@@ -39,7 +39,7 @@ export function TimeTrackerEntries() {
   useEffect(() => {
     const fetchEntries = async () => {
       try {
-        const token = Cookies.get("token"); // Get auth token
+        const token = Cookies.get("token");
         if (!token) throw new Error("No authentication token found");
 
         const response = await fetch("http://localhost:3000/time-entry", {
@@ -71,6 +71,28 @@ export function TimeTrackerEntries() {
     fetchEntries();
   }, []);
 
+  // Function to format date string to HH:mm
+  const formatTime = (isoString: string | null) => {
+    if (!isoString) return "Ongoing";
+    const date = new Date(isoString);
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
+
+  // Function to convert totalTime (milliseconds) into HH:mm format
+ // Function to convert totalTime (minutes) into HH:mm format correctly
+const formatTotalTime = (totalTime: number | null) => {
+  if (totalTime === null || totalTime < 0) return "N/A";
+
+  if (totalTime < 60) {
+    return `${totalTime} min`; // Show minutes if under 60
+  } else {
+    const hours = Math.floor(totalTime / 60); // Convert to hours
+    const minutes = totalTime % 60; // Get remaining minutes
+    return minutes === 0 ? `${hours} hr` : `${hours} hr ${minutes} min`;
+  }
+};
+
+
   return (
     <Card>
       <CardHeader>
@@ -84,14 +106,24 @@ export function TimeTrackerEntries() {
             entries.map((entry) => (
               <div
                 key={entry.id}
-                className="flex items-center justify-between p-4 rounded-lg bg-muted/50"
+                className="flex justify-between items-center p-4 rounded-lg bg-muted/50"
               >
+                {/* Left Side: Project Name, Task Title, Description */}
                 <div>
-                  <p className="text-lg font-semibold">{entry.project.name}</p>
-                  <p className="text-sm text-gray-500">
-                    {entry.startTime} - {entry.endTime ?? "Ongoing"}
-                  </p>
+                  <div className="font-medium"><p>{entry.project.name}</p></div>
+                  
+                  <div className="text-sm text-muted-foreground"><p>{entry.task.title} - {entry.task.description}</p>
+                </div></div>
+
+                {/* Right Side: Start - End Time & Time Spent */}
+
+                <div className="flex items-center gap-4">
+                <div className="text-sm text-muted-foreground">
+                {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
                 </div>
+                <div className="font-mono">{formatTotalTime(entry.totalTime)}</div>
+              </div>
+               
               </div>
             ))
           ) : (

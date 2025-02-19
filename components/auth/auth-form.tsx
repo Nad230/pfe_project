@@ -74,7 +74,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 
       if (mode === "register") {
         // Redirect to login after successful signup
-        router.push("/auth/login");
+        router.push("/auth");
       } else {
         // Redirect to dashboard after login
         router.push("/dashboard");
